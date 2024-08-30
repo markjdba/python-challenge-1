@@ -53,6 +53,8 @@ menu = {
 # 1. Set up order list. Order list will store a list of dictionaries for
 # menu item name, item price, and quantity ordered
 
+# MWJ - Create an empty list
+order_list = []
 
 # Launch the store and present a greeting to the customer
 print("Welcome to the variety food truck.")
@@ -117,26 +119,67 @@ while place_order:
                         "Price": value
                     }
                     i += 1
-            # 2. Ask customer to input menu item number
 
+        # else:
+            # Invalid menu option message
+        #        print(f"{menu_category} was not a menu option.")
 
+            # 2 Ask customer to input menu item number
+            # MWJ - ask for user input
+        menu_order = True    
+        while menu_order:    
+            menu_selection = input("Please input the menu item number: ")
+
+            # MWJ - input validation
             # 3. Check if the customer typed a number
-
+            if menu_selection.isdigit():
+        # Check customer's input
+            # 4. Check if the menu selection is in the menu items
+                if int(menu_selection) in menu_items.keys():
+            # If valid save the menu category name
                 # Convert the menu selection to an integer
-
-
-                # 4. Check if the menu selection is in the menu items
-
-                    # Store the item name as a variable
-
+                # Store the item name as a variable
+                    menu_selection_name = menu_items[int(menu_selection)]
+                    print(f"You selected {menu_selection_name}")
+                    break
+         
+                else:
+            # Invalid menu option message
+                    print(f"{menu_selection} was not a menu option.")
+                    exit(1)
+            else:
+        # Invalid number message
+                print("You must select a number.")
+                exit(1)
 
                     # Ask the customer for the quantity of the menu item
+            #MWJ
+
+    print (menu_selection_name)
+    order_quantity = input(f"How many {menu_selection_name} do you want? The quantity will default to 1 if the selection is invalid ")
 
 
                     # Check if the quantity is a number, default to 1 if not
-
+    if order_quantity.isdigit():
+        order_quantity = (int(order_quantity))
+        
+    else:
+        order_quantity = 1
+            
+    item_name_entry = menu_selection_name["Item name"]
+    price_entry = menu_selection_name["Price"]
+    # print(item_name_entry)
+    # print(price_entry)
+    # print(order_quantity)
 
                     # Add the item name, price, and quantity to the order list
+    # MWJ !!!!!!!!!!!!!!!
+    
+    order_list.append({
+        "Item name":item_name_entry,
+        "Price":price_entry,
+        "Quantity":order_quantity
+        })
 
 
                     # Tell the customer that their input isn't valid
@@ -144,17 +187,15 @@ while place_order:
 
                 # Tell the customer they didn't select a menu option
 
-        else:
-            # Tell the customer they didn't select a menu option
-            print(f"{menu_category} was not a menu option.")
-    else:
-        # Tell the customer they didn't select a number
-        print("You didn't select a number.")
-
+ #       else:
+ #             # Tell the customer they didn't select a menu option
+#         print(f"{menu_category} was not a menu option.")
+    
+# MWJ - keep ordering loop
     while True:
         # Ask the customer if they would like to order anything else
-        keep_ordering = input("Would you like to keep ordering? (Y)es or (N)o ")
-
+        keep_ordering = input("Would you like to keep ordering? (Y)es or (N)o ")   
+        
         # 5. Check the customer's input
 
                 # Keep ordering
@@ -170,31 +211,74 @@ while place_order:
 
 
                 # Tell the customer to try again
+        # class code from match_case_solution.py
+       
+        # Check the customer's input
+        match keep_ordering.lower():
+            # Customer chose yes
+            case 'y':
+                # Keep ordering
+                place_order = True
+                # Exit the keep ordering question loop
+                break
+            # Customer chose no
+            case 'n':
+                # Complete the order
+                place_order = False
+                # Since the customer decided to stop ordering, thank them for their order
+                print("Thank you for your order.")
+                # Exit the keep ordering question loop
+                break
+            # Customer typed an invalid input
+            case _:
+                # Tell the customer to try again
+                print("I didn't understand your response. Please try again.")
 
-
+# MWJ - Place_order is now complete
 # Print out the customer's order
 print("This is what we are preparing for you.\n")
 
 # Uncomment the following line to check the structure of the order
-#print(order)
+print(order_list)
 
 print("Item name                 | Price  | Quantity")
 print("--------------------------|--------|----------")
 
 # 6. Loop through the items in the customer's order
+# Use a for loop to loop through the order list
+
+for x in order_list:
+    # print(x)
 
     # 7. Store the dictionary items as variables
-
+    item_name_order = x["Item name"]
+    price_entry_order = x["Price"]
+    quantity_order = x["Quantity"]
 
     # 8. Calculate the number of spaces for formatted printing
-
+    num_item_spaces = 25 - len(item_name_order)
+    item_spaces = " " * num_item_spaces
+    # num_price_spaces = 8 - len(price_entry_order)
+    # price_spaces = " " * num_price_spaces
 
     # 9. Create space strings
 
 
     # 10. Print the item name, price, and quantity
+print(f"{item_name_order}{item_spaces} |  "
+      + f"${price_entry_order} |    "
+      + f"{quantity_order}")
 
 
 # 11. Calculate the cost of the order using list comprehension
 # Multiply the price by quantity for each item in the order list, then sum()
 # and print the prices.
+
+# Use a list comprehension to calculate the total number of guests
+#total_guests = sum([guest["party_number_children"] + guest["party_number_adults"] for guest in guests])
+#print(f"Total guests entered: {total_guests}")
+
+#total_cost = sum(lineitem["Price"] * lineitem("Quantity") for lineitem in order_list)
+#print(f"Total cost: {total_cost}")
+
+
